@@ -1,0 +1,8 @@
+application:
+  port: 8000
+database:
+  port: 5432
+  host: localhost
+  username: dev_user
+  password: password123
+  database_name: shorty_dev_db

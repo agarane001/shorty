@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Shorty - URL Shortener</title>
+        <link href="/assets/output.css" rel="stylesheet"/>
+  </head>
+  <body class="bg-gray-50 font-sans">
+    <nav class="bg-indigo-600 p-4 text-white shadow-lg">
+      <div class="container mx-auto flex justify-between">
+        <a href="/" class="text-xl font-bold">Shorty</a>
+        <div>{% block nav_links %}{% endblock %}</div>
+      </div>
+    </nav>
+    <main class="container mx-auto mt-10 px-4">
+      {% block content %}{% endblock %}
+    </main>
+  </body>
+</html>
