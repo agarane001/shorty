@@ -43,7 +43,7 @@ impl UrlRepository {
     /// Fetch all URLs belonging to a specific user
     pub async fn list_by_user(&self, user_id: uuid::Uuid) -> anyhow::Result<Vec<UrlModel>> {
         let rows = sqlx::query_as::<_, UrlModel>(
-            r#"SELECT short_code, long_url, user_id, clicks, created_at AS "created_at!: DateTime<Utc>"
+            r#"SELECT short_code, long_url, user_id, clicks, created_at
             FROM urls
             WHERE user_id = $1"#,
         )

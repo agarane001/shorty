@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-4xl">
+    <h2 class="text-2xl font-bold mb-6">Profile</h2>
+    
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="flex">
+            <div class="w-48 bg-gray-50 p-6 border-r border-gray-100">
+                <button class="w-full text-left px-4 py-2 bg-indigo-600 text-white rounded-md text-sm mb-2 shadow-md">
+                    <i class="fa-solid fa-user mr-2"></i> Profile
+                </button>
+                <button class="w-full text-left px-4 py-2 text-gray-500 hover:bg-gray-200 rounded-md text-sm">
+                    <i class="fa-solid fa-shield-halved mr-2"></i> Security
+                </button>
+            </div>
+
+            <div class="flex-1 p-8">
+                <div class="mb-8">
+                    <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Profile Photo</h3>
+                    <div class="relative w-24 h-24">
+                        <img src="https://ui-avatars.com/api/?name={{ email }}&size=128" class="rounded-full">
+                        <button class="absolute bottom-0 right-0 bg-white p-1 rounded-full shadow border border-gray-100">
+                            <i class="fa-solid fa-camera text-xs text-gray-500"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <form class="grid grid-cols-2 gap-6">
+                    <div class="col-span-1">
+                        <label class="block text-xs font-semibold text-gray-400 uppercase mb-2">First Name</label>
+                        <input type="text" placeholder="Your Name" class="w-full bg-gray-50 border border-gray-200 rounded px-4 py-2 text-sm focus:ring-yellow-500">
+                    </div>
+                    <div class="col-span-1">
+                        <label class="block text-xs font-semibold text-gray-400 uppercase mb-2">Last Name</label>
+                        <input type="text" placeholder="Your Surname" class="w-full bg-gray-50 border border-gray-200 rounded px-4 py-2 text-sm focus:ring-yellow-500">
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-xs font-semibold text-gray-400 uppercase mb-2">Email</label>
+                        <input type="email" value="{{ email }}" disabled class="w-full bg-gray-100 border border-gray-200 rounded px-4 py-2 text-sm text-gray-500">
+                    </div>
+                    
+                    <div class="col-span-2 flex items-center justify-between mt-4">
+                        <button type="submit" class="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded font-bold text-sm transition shadow-md">
+                            Save Changes
+                        </button>
+                        <button type="button" class="text-red-500 text-sm font-medium hover:underline">
+                            Delete account
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

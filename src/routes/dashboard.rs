@@ -24,9 +24,11 @@ pub async fn dashboard_handler(
         .await
         .unwrap_or_default();
 
+    println!("Got {} urls", urls.len());
+
     // 2. Render Template
     let template = DashboardTemplate {
-        email: claims.sub, // Or fetch email from DB
+        email: claims.sub,
         urls,
     };
     Html(template.render().unwrap())

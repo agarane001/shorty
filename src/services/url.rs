@@ -44,6 +44,8 @@ impl UrlService {
     }
 
     pub async fn get_user_urls(&self, user_id: Uuid) -> anyhow::Result<Vec<UrlModel>> {
-        self.repo.list_by_user(user_id).await
+        let urls = self.repo.list_by_user(user_id).await;
+        println!("The service has {} urls", urls.as_ref().unwrap().len());
+        urls
     }
 }

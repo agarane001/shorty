@@ -24,18 +24,22 @@ use crate::startup::AppState;
 
 #[derive(Template)]
 #[template(path = "signup.html")]
-struct SignupTemplate {}
+struct SignupTemplate {
+    email: String,
+}
 
 #[derive(Template)]
 #[template(path = "login.html")]
-struct LoginTemplate {}
+struct LoginTemplate {
+    email: String,
+}
 
 pub async fn signup_page() -> impl IntoResponse {
-    Html(SignupTemplate {}.render().unwrap())
+    Html(SignupTemplate { email: "".into() }.render().unwrap())
 }
 
 pub async fn login_page() -> impl IntoResponse {
-    Html(LoginTemplate {}.render().unwrap())
+    Html(LoginTemplate { email: "".into() }.render().unwrap())
 }
 
 #[instrument(name = "Web: Login POST", skip(state, jar, payload))]
@@ -80,6 +84,12 @@ pub async fn signup_post(
         .map_err(|_| AuthError::Internal)?;
 
     Ok(Redirect::to("/login"))
+}
+
+#[instrument(name = "Web: Logout GET", skip(jar))]
+pub async fn logout_handler(jar: CookieJar) -> impl IntoResponse {
+    let updated_jar = jar.remove(Cookie::from("jwt"));
+    (updated_jar, Redirect::to("/login"))
 }
 
 static KEYS: LazyLock<Keys> = LazyLock::new(|| {

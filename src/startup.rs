@@ -1,9 +1,11 @@
 pub use crate::configuration;
 use crate::routes::auth::login_page;
 use crate::routes::auth::login_post;
+use crate::routes::auth::logout_handler;
 use crate::routes::auth::signup_page;
 use crate::routes::auth::signup_post;
 use crate::routes::dashboard::dashboard_handler;
+use crate::routes::url::shorten_form_handler;
 use crate::services::auth::AuthService;
 use crate::services::url::UrlService;
 use crate::store::CacheRepository;
@@ -68,7 +70,9 @@ pub async fn run() {
         .route("/register", post(register_handler))
         .route("/login", get(login_page).post(login_post))
         .route("/signup", get(signup_page).post(signup_post))
+        .route("/logout", get(logout_handler))
         .route("/authorize", post(authorize_handler))
+        .route("/shorten", post(shorten_form_handler))
         .nest_service(
             "/assets",
             ServeDir::new(format!(

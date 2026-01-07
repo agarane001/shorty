@@ -1,13 +1,40 @@
 use std::collections::HashMap;
 
-use axum::{Json, extract::{Path, Query, State}, http::{self, StatusCode}, response::{IntoResponse, Redirect}};
+use axum::{Form, Json, extract::{Path, Query, State}, http::{self, StatusCode}, response::{IntoResponse, Redirect}};
 use tracing::instrument;
 use uuid::Uuid;
 
-use crate::{routes::auth::Claims, startup::AppState}; // Your JWT Claims struct
+use crate::{errors::AuthError, routes::auth::Claims, startup::AppState}; // Your JWT Claims struct
 
 use tracing::{info, warn, error};
 use serde_json::json;
+
+#[derive(serde::Deserialize)]
+pub struct CreateUrlForm{
+    pub url: String,
+}
+
+#[instrument(name = "Web: Create URL", skip(state, claims, form))]
+pub async fn shorten_form_handler(
+    State(state): State<AppState>,
+    claims: Claims,
+    Form(form): Form<CreateUrlForm>,
+) -> Result<impl IntoResponse, AuthError> {
+    let user_id = uuid::Uuid::parse_str(&claims.sub)
+        .map_err(|_| AuthError::InvalidToken)?;
+
+    // Use your existing service logic
+    state.url_service
+        .shorten(&form.url, user_id)
+        .await
+        .map_err(|e| {
+            tracing::error!("Failed to shorten URL: {:?}", e);
+            AuthError::Internal
+        })?;
+
+    // Redirect back to the dashboard to show the new link in the list
+    Ok(Redirect::to("/dashboard"))
+}
 
 #[instrument(
     name = "HTTP: Shorten request", 
