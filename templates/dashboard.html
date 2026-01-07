@@ -34,6 +34,13 @@
             </div>
             <p class="text-2xl font-black text-gray-800">{{ urls.len() }}</p>
         </div>
+        <div class="text-center">
+    <div class="flex justify-center items-center gap-2 text-gray-400 mb-1">
+        <i class="fa-solid fa-hand-pointer text-xs"></i>
+        <span class="text-[10px] font-bold uppercase tracking-widest">Clicks</span>
+    </div>
+    <p class="text-2xl font-black text-gray-800">{{ total_clicks }}</p>
+</div>
         </div>
 
     <div class="space-y-4">
@@ -45,8 +52,8 @@
                     <i class="fa-solid fa-ellipsis-vertical -ml-1"></i>
                 </div>
                 <div>
-                    <h4 class="font-bold text-gray-800 mb-1">Link Destination</h4>
-                    <p class="text-xs text-blue-400 font-medium">sho.rt/{{ url.short_code }}</p>
+                  <h4 class="font-bold text-gray-800 mb-1">{{url.long_url}}</h4>
+                  <a class="text-xs text-blue-400 font-medium" href="http://localhost:4001/url/{{ url.short_code }}">{{url.short_code}}</a>
                 </div>
             </div>
             <div class="flex items-center gap-8">

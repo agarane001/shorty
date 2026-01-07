@@ -13,7 +13,7 @@ chrono = {version = "0.4.42", features = ["serde"]}
 config = "0.15.19"
 jsonwebtoken = { version = "10.2.0", features = ["aws_lc_rs"] }
 nanoid = "0.4.0"
-redis = {version = "1.0.2", default-features = false, features = ["tokio-comp", "bb8"]}
+redis = {version = "1.0.2", default-features = false, features = ["tokio-comp", "bb8", "json", "uuid"]}
 secrecy = { version = "0.10.3", features = ["serde"] }
 serde = { version = "1.0.228", features = ["derive"] }
 serde-aux = "4.7.0"

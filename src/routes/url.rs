@@ -32,6 +32,7 @@ pub async fn shorten_form_handler(
             AuthError::Internal
         })?;
 
+
     // Redirect back to the dashboard to show the new link in the list
     Ok(Redirect::to("/dashboard"))
 }

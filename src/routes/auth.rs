@@ -24,22 +24,18 @@ use crate::startup::AppState;
 
 #[derive(Template)]
 #[template(path = "signup.html")]
-struct SignupTemplate {
-    email: String,
-}
+struct SignupTemplate {}
 
 #[derive(Template)]
 #[template(path = "login.html")]
-struct LoginTemplate {
-    email: String,
-}
+struct LoginTemplate {}
 
 pub async fn signup_page() -> impl IntoResponse {
-    Html(SignupTemplate { email: "".into() }.render().unwrap())
+    Html(SignupTemplate {}.render().unwrap())
 }
 
 pub async fn login_page() -> impl IntoResponse {
-    Html(LoginTemplate { email: "".into() }.render().unwrap())
+    Html(LoginTemplate {}.render().unwrap())
 }
 
 #[instrument(name = "Web: Login POST", skip(state, jar, payload))]

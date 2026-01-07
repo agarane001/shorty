@@ -1951,10 +1951,13 @@ dependencies = [
  "percent-encoding",
  "pin-project-lite",
  "ryu",
+ "serde",
+ "serde_json",
  "socket2 0.6.1",
  "tokio",
  "tokio-util",
  "url",
+ "uuid",
  "xxhash-rust",
 ]
 

@@ -30,12 +30,27 @@ impl UrlService {
     pub async fn resolve(&self, short_code: &str) -> Option<String> {
         // 1. Try Cache
         if let Some(url) = self.cache.get(short_code).await {
+            let s_code = short_code.to_string();
+            let repo = self.repo.clone();
+            tokio::spawn(async move {
+                let _ = repo.increment_clicks(&s_code).await;
+            });
             return Some(url);
         }
 
-        // 2. Try DB
-        if let Ok(Some(url)) = self.repo.fetch(short_code).await {
-            // 3. Backfill Cache
+        if let Ok(Some((url, user_id))) = self.repo.fetch_with_owner(short_code).await {
+            let repo = self.repo.clone();
+            let cache = self.cache.clone();
+            let code = short_code.to_string();
+
+            tokio::spawn(async move {
+                let _ = repo.increment_clicks(&code).await;
+                if let Some(uid) = user_id {
+                    let _ = cache.delete_user_urls(uid).await;
+                }
+            });
+
+            // Backfill individual link cache (Short Code -> Long URL)
             let _ = self.cache.set(short_code, &url).await;
             return Some(url);
         }
@@ -44,8 +59,6 @@ impl UrlService {
     }
 
     pub async fn get_user_urls(&self, user_id: Uuid) -> anyhow::Result<Vec<UrlModel>> {
-        let urls = self.repo.list_by_user(user_id).await;
-        println!("The service has {} urls", urls.as_ref().unwrap().len());
-        urls
+        self.repo.list_by_user(user_id).await
     }
 }

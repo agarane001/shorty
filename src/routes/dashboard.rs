@@ -10,6 +10,7 @@ use axum::{
 struct DashboardTemplate {
     email: String,
     urls: Vec<UrlModel>,
+    total_clicks: i32,
 }
 
 pub async fn dashboard_handler(
@@ -23,13 +24,13 @@ pub async fn dashboard_handler(
         .get_user_urls(user_id)
         .await
         .unwrap_or_default();
-
-    println!("Got {} urls", urls.len());
+    let total_clicks = urls.iter().map(|u| u.clicks).sum();
 
     // 2. Render Template
     let template = DashboardTemplate {
         email: claims.sub,
         urls,
+        total_clicks,
     };
     Html(template.render().unwrap())
 }
