@@ -1,0 +1,24 @@
+<div
+  class="bg-white p-6 rounded-3xl shadow-sm border border-gray-50 flex items-center justify-between hover:shadow-md transition-shadow cursor-pointer">
+  <div class="flex items-center gap-6">
+    <div class="text-gray-200">
+      <i class="fa-solid fa-ellipsis-vertical"></i>
+      <i class="fa-solid fa-ellipsis-vertical -ml-1"></i>
+    </div>
+    <div>
+      <h4 class="font-bold text-gray-800 mb-1">{{url.long_url}}</h4>
+      <a class="text-xs text-blue-400 font-medium"
+        href="http://localhost:4001/url/{{ url.short_code }}">{{url.short_code}}</a>
+    </div>
+  </div>
+  <div class="flex items-center gap-8">
+    <div class="flex items-center gap-2 text-sm font-bold text-gray-400">
+      <span>{{ url.clicks }}</span>
+      <i class="fa-solid fa-chart-simple text-gray-200"></i>
+    </div>
+    <div class="flex gap-1">
+      <button class="p-2 text-gray-300 hover:text-blue-500 transition"><i class="fa-regular fa-copy"></i></button>
+      <button class="p-2 text-gray-300 hover:text-red-400 transition"><i class="fa-regular fa-trash-can"></i></button>
+    </div>
+  </div>
+</div>
