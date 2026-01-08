@@ -17,11 +17,18 @@ impl UrlService {
         Self { repo, cache }
     }
 
-    pub async fn shorten(&self, long_url: &str, user_id: uuid::Uuid) -> anyhow::Result<String> {
+    pub async fn shorten(
+        &self,
+        long_url: &str,
+        site_name: &str,
+        user_id: uuid::Uuid,
+    ) -> anyhow::Result<String> {
         let short_code = nanoid!(8);
 
         // Save to DB first
-        self.repo.store(&short_code, long_url, user_id).await?;
+        self.repo
+            .store(&short_code, long_url, site_name, user_id)
+            .await?;
         // Optimistically cache it
         let _ = self.cache.set(&short_code, long_url).await;
 

@@ -12,6 +12,7 @@ use serde_json::json;
 #[derive(serde::Deserialize)]
 pub struct CreateUrlForm{
     pub url: String,
+    pub site_name: String
 }
 
 #[instrument(name = "Web: Create URL", skip(state, claims, form))]
@@ -25,7 +26,7 @@ pub async fn shorten_form_handler(
 
     // Use your existing service logic
     state.url_service
-        .shorten(&form.url, user_id)
+        .shorten(&form.url,&form.site_name, user_id)
         .await
         .map_err(|e| {
             tracing::error!("Failed to shorten URL: {:?}", e);
@@ -52,13 +53,18 @@ pub async fn shorten(
         None => return (http::StatusCode::BAD_REQUEST, "Missing url parameter").into_response(),
     };
 
+    let site_name = match params.get("site_name") {
+        Some(site_name) => site_name,
+        None => return (http::StatusCode::BAD_REQUEST, "Missing site_name parameter").into_response(),
+    };
+
     // Convert the string 'sub' from JWT back to a Uuid
     let user_id = match Uuid::parse_str(&claims.sub) {
         Ok(id) => id,
         Err(_) => return (http::StatusCode::UNAUTHORIZED, "Invalid user ID in token").into_response(),
     };
 
-    match state.url_service.shorten(url, user_id).await {
+    match state.url_service.shorten(url,site_name,user_id).await {
         Ok(shortened) => {
             Json(json!({ "short_url": shortened })).into_response()
         }

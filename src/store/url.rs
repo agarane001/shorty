@@ -19,12 +19,14 @@ impl UrlRepository {
         &self,
         short_code: &str,
         long_url: &str,
+        site_name: &str,
         user_id: uuid::Uuid,
     ) -> anyhow::Result<()> {
         sqlx::query!(
-            "INSERT INTO urls (short_code, long_url, user_id) VALUES ($1, $2, $3)",
+            "INSERT INTO urls (short_code, long_url,site_name, user_id) VALUES ($1, $2, $3, $4)",
             short_code,
             long_url,
+            site_name,
             user_id, /* Uuid */
         )
         .execute(&self.pg_pool)
@@ -56,7 +58,7 @@ impl UrlRepository {
     /// Fetch all URLs belonging to a specific user
     pub async fn list_by_user(&self, user_id: uuid::Uuid) -> anyhow::Result<Vec<UrlModel>> {
         let rows = sqlx::query_as::<_, UrlModel>(
-            r#"SELECT short_code, long_url, user_id, clicks, created_at
+            r#"SELECT short_code,site_name, long_url, user_id, clicks, created_at
             FROM urls
             WHERE user_id = $1 
             ORDER BY created_at DESC

@@ -1,0 +1,82 @@
+<div id="profileModal"
+  class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+  <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden transform transition-all">
+    <div class="p-8">
+      <div class="flex justify-between items-center mb-8">
+        <h3 class="text-xl font-black text-gray-800 tracking-tight">User Profile</h3>
+        <button onclick="closeProfileModal()" class="text-gray-400 hover:text-gray-600 transition">
+          <i class="fa-solid fa-xmark text-xl"></i>
+        </button>
+      </div>
+
+      <div class="flex flex-col items-center mb-8">
+        <div class="relative group">
+          <img src="https://ui-avatars.com/api/?name={{ email }}&size=128&background=2563eb&color=fff"
+            class="w-24 h-24 rounded-full border-4 border-blue-50 shadow-md">
+          <button
+            class="absolute bottom-0 right-0 bg-white p-2 rounded-full shadow-lg border border-gray-100 hover:text-blue-600 transition">
+            <i class="fa-solid fa-camera text-xs"></i>
+          </button>
+        </div>
+        <h4 class="mt-4 font-bold text-gray-800">{{ email }}</h4>
+        <span
+          class="text-[10px] font-bold text-blue-500 uppercase tracking-widest px-3 py-1 bg-blue-50 rounded-full mt-2">Verified
+          Account</span>
+      </div>
+
+      <form action="/update-profile" method="POST" class="space-y-5">
+        <div>
+          <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2 px-1">Email
+            Address</label>
+          <input type="email" value="{{ email }}" disabled
+            class="w-full px-5 py-4 bg-gray-100 border border-gray-100 rounded-2xl text-gray-500 cursor-not-allowed text-sm">
+        </div>
+
+        <div>
+          <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2 px-1">Display
+            Name</label>
+          <input type="text" name="display_name" placeholder="Enter name"
+            class="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-blue-100 outline-none transition text-sm">
+        </div>
+
+        <div class="pt-2">
+          <button type="submit"
+            class="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-2xl font-bold shadow-lg shadow-blue-200 transition-all active:scale-[0.98]">
+            Save Changes
+          </button>
+        </div>
+      </form>
+
+      <div class="mt-6 pt-6 border-t border-gray-50">
+        <a href="/logout"
+          class="flex items-center justify-center gap-2 text-sm font-bold text-red-400 hover:text-red-600 transition">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          Sign out of session
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openProfileModal() {
+    document.getElementById('profileModal').classList.remove('hidden');
+  }
+
+  function closeProfileModal() {
+    document.getElementById('profileModal').classList.add('hidden');
+  }
+
+  // Update your existing window.onclick to handle both modals
+  window.onclick = function (event) {
+    const urlModal = document.getElementById('urlModal');
+    const profileModal = document.getElementById('profileModal');
+
+    if (event.target == urlModal) {
+      urlModal.classList.add('hidden');
+    }
+    if (event.target == profileModal) {
+      profileModal.classList.add('hidden');
+    }
+  }
+</script>

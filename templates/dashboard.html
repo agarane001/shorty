@@ -17,12 +17,12 @@
         </div>
 
         <div class="flex items-center gap-4">
-            <i class="fa-regular fa-bell text-gray-400 text-xl cursor-pointer hover:text-gray-600"></i>
-            <div class="flex items-center gap-2 bg-white p-1 pr-3 rounded-full shadow-sm border border-gray-50">
-                <img src="https://ui-avatars.com/api/?name={{ email }}&background=2563eb&color=fff" class="w-8 h-8 rounded-full">
-                <span class="text-xs font-bold text-gray-600">{{ email }}</span>
-                <i class="fa-solid fa-chevron-down text-[10px] text-gray-400"></i>
-            </div>
+           <button onclick="openProfileModal()"
+  class="flex items-center gap-2 bg-white p-1 pr-3 rounded-full shadow-sm border border-gray-100 hover:border-blue-300 transition-all">
+  <img src="https://ui-avatars.com/api/?name={{ email }}&background=2563eb&color=fff" class="w-8 h-8 rounded-full">
+  <span class="text-xs font-bold text-gray-600">{{ email }}</span>
+  <i class="fa-solid fa-chevron-down text-[10px] text-gray-400"></i>
+</button>
         </div>
     </div>
 
@@ -50,4 +50,5 @@
     </div>
 </div>
 {% include "partials/create_url.html" %}
+{% include "partials/profile_popup.html" %}
 {% endblock %}

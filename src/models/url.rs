@@ -7,5 +7,6 @@ pub struct UrlModel {
     pub long_url: String,
     pub user_id: Option<uuid::Uuid>,
     pub clicks: i32,
+    pub site_name: String,
     pub created_at: chrono::DateTime<chrono::Utc>,
 }
