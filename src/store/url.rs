@@ -34,17 +34,11 @@ impl UrlRepository {
 
     pub async fn fetch(&self, short_code: &str) -> anyhow::Result<Option<String>> {
         let row = sqlx::query!(
-            r#"
-            UPDATE urls
-            SET clicks = clicks + 1
-            WHERE short_code = $1
-            RETURNING *;
-            "#,
+            "SELECT long_url FROM urls WHERE short_code = $1",
             short_code
         )
         .fetch_optional(&self.pg_pool)
         .await?;
-
         Ok(row.map(|r| r.long_url))
     }
 
@@ -71,6 +65,10 @@ impl UrlRepository {
         .bind(user_id)
         .fetch_all(&self.pg_pool)
         .await?;
+        println!(
+            "The current clicks count: {}",
+            rows.iter().map(|u| u.clicks).sum::<i32>()
+        );
         Ok(rows)
     }
     pub async fn fetch_with_owner(

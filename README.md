@@ -3,7 +3,7 @@
 
 #### Tasks
 ----------
-1. [ ] url service
+1. [x] url service
 2. [ ] user authentication and authorization
   - [ ] user model
   - [ ] user repo and api endpoints
@@ -19,8 +19,3 @@
 9. [ ] testing
 10. [ ] Improved system architecture
 11. [ ] dockerization
-# shorty
-# shorty
-# shorty
-# shorty
-# shorty
