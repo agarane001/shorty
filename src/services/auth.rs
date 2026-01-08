@@ -64,22 +64,4 @@ impl AuthService {
         Ok(user.id)
     }
 
-    #[instrument(name = "login user")]
-    pub async fn login_old(&self, email: &str, password: &str) -> Result<uuid::Uuid, AuthError> {
-        let user = self
-            .repo
-            .find_by_email(email)
-            .await
-            .map_err(|_| AuthError::Internal)?
-            .ok_or(AuthError::WrongCredentials)?;
-
-        let parsed_hash =
-            PasswordHash::new(&user.password_hash).map_err(|_| AuthError::Internal)?;
-
-        Argon2::default()
-            .verify_password(password.as_bytes(), &parsed_hash)
-            .map_err(|_| AuthError::WrongCredentials)?;
-
-        Ok(user.id)
-    }
 }

@@ -65,10 +65,6 @@ impl UrlRepository {
         .bind(user_id)
         .fetch_all(&self.pg_pool)
         .await?;
-        println!(
-            "The current clicks count: {}",
-            rows.iter().map(|u| u.clicks).sum::<i32>()
-        );
         Ok(rows)
     }
     pub async fn fetch_with_owner(

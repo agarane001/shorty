@@ -18,8 +18,15 @@ pub fn get_subscriber<Sink>(
 where
     Sink: for<'a> tracing_subscriber::fmt::MakeWriter<'a> + Sync + Send + 'static,
 {
-    let env_filter =
-        EnvFilter::try_from_default_env().unwrap_or_else(|_| EnvFilter::new(env_filter));
+    let env_filter = EnvFilter::try_from_default_env().unwrap_or_else(|_| {
+        // If no RUST_LOG is set, use the passed string (e.g., "info")
+        // but explicitly quiet down the noisy crates
+        EnvFilter::new(env_filter)
+            .add_directive("h2=warn".parse().unwrap())
+            .add_directive("hyper=warn".parse().unwrap())
+            .add_directive("tonic=warn".parse().unwrap())
+            .add_directive("tower=warn".parse().unwrap())
+    });
 
     // 1. Create the OTLP Span Exporter
     let exporter = SpanExporter::builder()

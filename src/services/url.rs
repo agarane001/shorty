@@ -42,6 +42,8 @@ impl UrlService {
                 }
             });
             return Some(url);
+        } else {
+            tracing::warn!("Url not in cache!");
         }
 
         // 2. Try DB (fetch_with_owner ALREADY increments clicks)
@@ -59,6 +61,7 @@ impl UrlService {
             let _ = self.cache.set(short_code, &url).await;
             return Some(url);
         }
+        tracing::warn!("Url was not found");
 
         None
     }
