@@ -19,3 +19,4 @@
 9. [ ] testing
 10. [ ] Improved system architecture
 11. [ ] dockerization
+# shorty
