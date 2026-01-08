@@ -1,5 +1,6 @@
 use redis::AsyncCommands;
 use sqlx::{Pool, Postgres};
+use tracing::instrument;
 use uuid::Uuid;
 
 use crate::models::url::UrlModel;
@@ -33,7 +34,12 @@ impl UrlRepository {
 
     pub async fn fetch(&self, short_code: &str) -> anyhow::Result<Option<String>> {
         let row = sqlx::query!(
-            "SELECT long_url FROM urls WHERE short_code = $1",
+            r#"
+            UPDATE urls
+            SET clicks = clicks + 1
+            WHERE short_code = $1
+            RETURNING *;
+            "#,
             short_code
         )
         .fetch_optional(&self.pg_pool)
@@ -42,6 +48,7 @@ impl UrlRepository {
         Ok(row.map(|r| r.long_url))
     }
 
+    #[instrument(name = "Increment clicks")]
     pub async fn increment_clicks(&self, short_code: &str) -> anyhow::Result<()> {
         sqlx::query!(
             "UPDATE urls SET clicks = clicks + 1 WHERE short_code = $1",
@@ -71,7 +78,10 @@ impl UrlRepository {
         short_code: &str,
     ) -> anyhow::Result<Option<(String, Option<Uuid>)>> {
         let row = sqlx::query!(
-            "SELECT long_url, user_id FROM urls WHERE short_code = $1",
+            r#"UPDATE urls 
+            SET clicks = clicks + 1
+            WHERE short_code = $1
+            RETURNING long_url, user_id;"#,
             short_code
         )
         .fetch_optional(&self.pg_pool)

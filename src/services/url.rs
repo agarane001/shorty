@@ -3,6 +3,7 @@ use crate::{
     store::{CacheRepository, UrlRepository},
 };
 use nanoid::nanoid;
+use tracing::instrument;
 use uuid::Uuid;
 
 #[derive(Clone, Debug)]
@@ -27,6 +28,7 @@ impl UrlService {
         Ok(short_code)
     }
 
+    #[instrument(name = "Service: Resolve url")]
     pub async fn resolve(&self, short_code: &str) -> Option<String> {
         // 1. Try Cache
         if let Some(url) = self.cache.get(short_code).await {
@@ -39,12 +41,9 @@ impl UrlService {
         }
 
         if let Ok(Some((url, user_id))) = self.repo.fetch_with_owner(short_code).await {
-            let repo = self.repo.clone();
             let cache = self.cache.clone();
-            let code = short_code.to_string();
 
             tokio::spawn(async move {
-                let _ = repo.increment_clicks(&code).await;
                 if let Some(uid) = user_id {
                     let _ = cache.delete_user_urls(uid).await;
                 }
